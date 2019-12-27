@@ -14,7 +14,9 @@ CURRENT_STATE = ""
 @app.route("/",methods=['GET'])
 def home():
     return "Hello, World!"
-
+@app.route("/",methods=['GET'])
+def home2():
+    return "hello"
 
 @app.route('/summarize/', methods=['GET', 'POST'])
 def summarizer():
@@ -84,7 +86,10 @@ def dispensePing():
     return jsonify(res)
 
 
+@app.route('/receivecall/',methods=['GET','POST'])
 
+def receiveCall():
+    return "Hell World"
 @app.route('/call-xml/', methods=['GET'])
 def callXML():
     xml = """
@@ -99,9 +104,7 @@ def callXML():
    </Response>"""
     return Response(xml, mimetype='text/xml')
 
-@app.route('/receiveCall',methods='POST')
-def receiveCall():
-    pass
+
 
 @app.route('/sms/', methods=['POST'])
 def sms():
