@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 CURRENT_STATE = ""
-@app.route("/")
+@app.route("/",methods=['GET'])
 def home():
     return "Hello, World!"
 
@@ -84,12 +84,6 @@ def dispensePing():
     return jsonify(res)
 
 
-# @app.route('/setState/', methods=['POST'])
-# def setState():
-#     print(request.form['personName'])
-
-#     return "Hello"
-
 
 @app.route('/call-xml/', methods=['GET'])
 def callXML():
@@ -105,6 +99,9 @@ def callXML():
    </Response>"""
     return Response(xml, mimetype='text/xml')
 
+@app.route('/receiveCall',methods='POST')
+def receiveCall():
+    pass
 
 @app.route('/sms/', methods=['POST'])
 def sms():
