@@ -4,19 +4,15 @@ from summarizer import summarize
 from face_rekog import face_eval
 from flask import render_template
 from flask_cors import CORS
-from sms import sendText, makeCall
-import json
+from sms import sendText
+from twilio.twiml.voice_response import VoiceResponse,Gather
 
 app = Flask(__name__)
 CORS(app)
 
-CURRENT_STATE = ""
 @app.route("/",methods=['GET'])
 def home():
     return "Hello, World!"
-@app.route("/",methods=['GET'])
-def home2():
-    return "hello"
 
 @app.route('/summarize/', methods=['GET', 'POST'])
 def summarizer():
@@ -39,21 +35,19 @@ def patient():
         pin = request.args.get('pin')
         dnh = DoctorNotesHelper()
         data = dnh.getNote(pin)
-        print(data)
         res = {'message': data['notes'][-1]['message']}
         return jsonify(res)
 
 
 @app.route('/sendNote/', methods=['POST'])
 def sendNote():
-    print("GOt here.")
     pin = request.form['userPin']
     note = request.form['doctorNote']
     print(pin, note)
     d = DoctorNotesHelper()
     d.addNoteForPatient(pin, note)
 
-    return "Hi"
+    return ""
 
 
 @app.route('/sPatient/', methods=['GET'])
@@ -85,25 +79,46 @@ def dispensePing():
     res = {'num_prescriptions': len(data['prescription']), 'message': msg}
     return jsonify(res)
 
+@app.route('/endcall',methods=['POST'])
+def end():
+    resp = VoiceResponse()
+    resp.say("Thank you. Your information has been recorded and you should expect to hear "
+             "back soon. In the mean time, we hope you feel better. Goodbye.")
+    resp.hangup()
+    return str(resp)
 
-@app.route('/receivecall/',methods=['GET','POST'])
 
+@app.route('/transcribe/<digits>',methods=['POST'])
+def transcribe(digits):
+    dbHelper = PatientDBHelper()
+    dbHelper.addMedicalDataForPatient(digits,request.form['TranscriptionText'])
+    return "Transcription added to Patient Database."
+
+@app.route('/verification',methods=['POST'])
+def verification():
+    digits = request.form['Digits']
+    patientDB = PatientDBHelper()
+    resp = VoiceResponse()
+    patient = patientDB.getDataForPatient(pin=digits,phone=request.form['Caller'])
+    if(patient):
+        resp.say("Welcome back to Pillar, {}. Please "
+                 " describe your symptoms after the beep. When you are done,"
+                 "please press the pound key. Thank you.".format(patient['name']))
+        resp.record(finish_on_key="#", action="https://pillarrestapi.herokuapp.com/endcall"
+                    ,method="POST",
+                    transcribe_callback="https://pillarrestapi.herokuapp.com/transcribe/"
+                                        + digits)
+    else:
+        resp.say("Sorry, we were unable to verify you. Goodbye.")
+
+    return str(resp)
+@app.route('/receivecall',methods=['POST'])
 def receiveCall():
-    return "Hell World"
-@app.route('/call-xml/', methods=['GET'])
-def callXML():
-    xml = """
-   <Response>
-        <Say voice="woman">Welcome to Pillar. </Say>
-        <Say voice="woman">All discussion within this call is completley private and secure. Please describe how you're feeling and any symptoms or updates regarding your health.
-        </Say>
-        <Say voice="woman"> Press pound when you're finished.</Say>
-        <Record action="http://webhookr.com/pillar" method="POST" finishOnKey="#"/>
-        <Say voice="woman">Your information has been transcribed and sent to your doctor. Expect to hear back soon and take care.
-        </Say>
-   </Response>"""
-    return Response(xml, mimetype='text/xml')
-
+    resp = VoiceResponse()
+    resp.say("Welcome to Pillar. "
+             "Please enter your 4 digit verification code and press pound.")
+    resp.gather(num_digits=4,action="https://pillarrestapi.herokuapp.com/verification")
+    return str(resp)
 
 
 @app.route('/sms/', methods=['POST'])
@@ -119,12 +134,6 @@ def call():
     number = request.args.get('number')
     r = makeCall(number)
     return "Call Success"
-
-
-@app.route('/call-transcribe/', methods=['POST'])
-def callTranscribe():
-    print(request.form())
-    return "Hi"
 
 
 if __name__ == "__main__":

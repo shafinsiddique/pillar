@@ -25,20 +25,13 @@ aws_compclient = boto3.client(service_name='comprehend',
                               aws_secret_access_key=aws_secret_access_key)
 
 
-def summarize(text, db):
+def summarize(text):
     querystring = {"txt": text, "sentences": "5"}
     summary = requests.request(
         "GET", url, headers=headers, params=querystring).json()['summary']
-    med_entities = aws_medclient.detect_entities(Text=text)['Entities']
-    med_info = [{'Category': x['Category'], 'Text': x['Text'],
-                 'Traits': x['Traits'], 'Type': x['Type']} for x in med_entities]
-    sentiment = aws_compclient.detect_sentiment(
-        Text=text, LanguageCode='en')['Sentiment']
-    entities = [x['Text'] for x in aws_compclient.detect_entities(
-        Text=text, LanguageCode='en')['Entities']]
-    res = {'medical_info': med_info, 'summary': summary,
-           'sentiment': sentiment, 'entities': entities}
-    if db:
-        return res
 
-    return jsonify(res)
+    return summary
+    # return jsonify(res)
+
+if __name__ == "__main__":
+    pass

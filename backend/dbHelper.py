@@ -19,9 +19,10 @@ class PatientDBHelper:
 
         return documents
 
-    def getDataForPatient(self, pin):
+    def getDataForPatient(self, pin,phone=None):
         """Get all the data for patient with 'patientName' """
-
+        if phone:
+            return self.collection.find_one({"pin": pin,"phone":phone})
         return self.collection.find_one({"pin": pin})
 
     def getDataForPatientName(self, name):
@@ -50,15 +51,13 @@ class PatientDBHelper:
         print("{} added to the patient database.".format(name))
 
     def addMedicalDataForPatient(self, pin, medicalData):
-        """append new medical data for the patient with patientName"""
+        """append new medical data for the patient with """
 
         query = {"pin": pin}
-        summary = summarizer.summarize(medicalData, True)
+        summary = summarizer.summarize(medicalData)
         self.collection.update_one(
             query, {"$push": {"medicalRecord": {"date": datetime.now(), "data": summary}}})
         self.collection.update_one(query, {"$inc": {"number_of_visits": 1}})
-        self.collection.update_one(
-            query, {"$set": {"curr_sentiment": summary['sentiment']}})
         print("Medical Record updated for patient {}".format(pin))
 
     def updateValueFor(self, pin, keyName, value):
@@ -69,7 +68,6 @@ class PatientDBHelper:
         query = {"pin": pin}
         self.collection.update_one(
             query, {"$push": {"prescription": prescription}})
-
 
 class DoctorNotesHelper:
     def __init__(self):

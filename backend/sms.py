@@ -1,27 +1,14 @@
-
-import requests
-
-account_sid = "AC777c3e32c331cf18084b4a08be67e188"
-auth_token = "e4a2a1ebe6aa4d9ebd66cc3bac87d8fb"
-base = "https://" + account_sid + ":" + auth_token + \
-    "@api.zang.io/v2/Accounts/" + account_sid
-SMS_URL = base+"/SMS/Messages.json"
-CALL_URL = base+"/Calls.json"
-
-
+from twilio.rest import Client
+import json
+account_sid = "AC05c393f8d847379407a03bd90a4a21a5"
+auth_token = "05b0b84317e5452b9e87f95d453a1729"
+client = Client(account_sid, auth_token)
 def sendText(message, number):
-    data = {"From": "+1 647-930-8813", "To": number, "Body": message}
-    r = requests.post(url=SMS_URL, data=data)
-    return r
-
-
-def makeCall(number):
-    data = {"From": "+1 647-930-8813", "To": number,
-            "Url": "http://cloud.zang.io/data/inboundxml/34b244e3a9bba1a1e2e8bb65d0c549fd2e1bb1ca"
-            }
-    r = requests.post(url=CALL_URL, data=data)
-    return r
-
+    return client.messages.create(
+        body=message,
+        from_='+12564877652',
+        to=number
+    )
 
 if __name__ == "__main__":
-    sendText("Hi, Shafin.", "416-880-9456")
+    print(sendText("Hi, Shafin.", "+16478918425"))

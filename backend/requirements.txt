@@ -28,3 +28,4 @@ six==1.13.0
 urllib3==1.25.7
 Werkzeug==0.16.0
 zope.interface==4.7.1
+twilio==6.33.1
