@@ -101,4 +101,5 @@ class DispenseDBHelper:
 
 if __name__ == "__main__":
     d = DoctorNotesHelper()
-    print(d.getNote("1234"))
+    d.addPatient("1111","Shafin Siddique")
+    # print(d.getNote("1234"))

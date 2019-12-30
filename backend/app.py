@@ -6,7 +6,7 @@ from flask import render_template
 from flask_cors import CORS
 from sms import sendText
 from twilio.twiml.voice_response import VoiceResponse,Gather
-
+import os
 app = Flask(__name__)
 CORS(app)
 
@@ -29,7 +29,7 @@ def face_match():
         return face_eval(source, target)
 
 
-@app.route('/patient/', methods=['GET', 'POST'])
+@app.route('/patient', methods=['GET', 'POST'])
 def patient():
     if request.method == 'GET':
         pin = request.args.get('pin')
@@ -39,19 +39,19 @@ def patient():
         return jsonify(res)
 
 
-@app.route('/sendNote/', methods=['POST'])
+@app.route('/sendNote', methods=['POST'])
 def sendNote():
-    note = request.args['note']
-    pin = request.args['pin']
-    phoneNumber = request.args['phone']
+    note = request.form['note']
+    pin = request.form['pin']
+    phoneNumber = request.form['phone']
     d = DoctorNotesHelper()
     d.addNoteForPatient(pin,note)
     sendText("Your doctor has sent you a new message based on your last phone call "
-             " to Pillar: {}.".format(note),phoneNumber)
+             "to Pillar: {}.".format(note),phoneNumber)
     sendText("Please go to your nearest Pillar Station to pick up your medications. "
              "Thank you.", phoneNumber)
 
-    return ""
+    return "Note added."
 
 @app.route('/sPatient/<name>', methods=['GET'])
 def getPatientDataFor(name):
