@@ -43,11 +43,15 @@ def patient():
 def sendNote():
     note = request.args['note']
     pin = request.args['pin']
+    phoneNumber = request.args['phone']
     d = DoctorNotesHelper()
-    d.addNoteForPatient(pin, note)
+    d.addNoteForPatient(pin,note)
+    sendText("Your doctor has sent you a new message based on your last phone call "
+             " to Pillar: {}.".format(note),phoneNumber)
+    sendText("Please go to your nearest Pillar Station to pick up your medications. "
+             "Thank you.", phoneNumber)
 
     return ""
-
 
 @app.route('/sPatient/<name>', methods=['GET'])
 def getPatientDataFor(name):

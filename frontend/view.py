@@ -19,6 +19,9 @@ def patient(patientName):
         return render_template('patient.html',info=pInfo)
 
     requests.post("https://pillarrestapi.herokuapp.com/patients/sendNote",
-                  data={"note":request.form['note'],"pin": pInfo['pin']})
-    flash("")
+                  data={"note":request.form['note'],"pin": pInfo['pin'],
+                        "phone":pInfo['phone']})
+
+    flash("New Note added for {}".format(patientName))
+
     return render_template('patient.html',info=pInfo)
