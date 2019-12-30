@@ -41,9 +41,8 @@ def patient():
 
 @app.route('/sendNote/', methods=['POST'])
 def sendNote():
-    pin = request.form['userPin']
-    note = request.form['doctorNote']
-    print(pin, note)
+    note = request.args['note']
+    pin = request.args['pin']
     d = DoctorNotesHelper()
     d.addNoteForPatient(pin, note)
 

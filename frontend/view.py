@@ -1,4 +1,4 @@
-from flask import Flask,render_template
+from flask import Flask,render_template,request,flash
 import requests
 app = Flask(__name__)
 @app.route('/',methods=['GET'])
@@ -12,7 +12,13 @@ def home():
             patients[x]['lastVisit'] = "-"
     return render_template('index.html',patients=patients)
 
-@app.route('/<patientName>',methods=['GET'])
+@app.route('/<patientName>',methods=['GET','POST'])
 def patient(patientName):
-    print(requests.get("https://pillarrestapi.herokuapp.com/sPatient/" + patientName).json())
-    return render_template('patient.html')
+    pInfo =requests.get("https://pillarrestapi.herokuapp.com/sPatient/" + patientName).json()
+    if request.method == "GET":
+        return render_template('patient.html',info=pInfo)
+
+    requests.post("https://pillarrestapi.herokuapp.com/patients/sendNote",
+                  data={"note":request.form['note'],"pin": pInfo['pin']})
+    flash("")
+    return render_template('patient.html',info=pInfo)
