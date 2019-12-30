@@ -50,11 +50,10 @@ def sendNote():
     return ""
 
 
-@app.route('/sPatient/', methods=['GET'])
-def getPatientDataFor():
+@app.route('/sPatient/<name>', methods=['GET'])
+def getPatientDataFor(name):
     p = PatientDBHelper()
-    name = request.args.get("name")
-    return p.getDataForPatientName(name)
+    return jsonify(p.getDataForPatientName(name))
 
 
 @app.route('/patients/', methods=['GET'])
