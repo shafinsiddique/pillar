@@ -34,4 +34,4 @@ Through this low-cost and convenient service, we hope to create a world of more 
 ## What's next for Pillar
 - We originally integrated Amazon Web Services (Facial Recognition) login for our project but did not have enough time to polish it. For added security reasons, we would polish and implement this feature in the future. This would also be used to provide annotated and analyzed images for doctors to go with symptom descriptions.
 - We also wanted to visualize a lot of the patient's information in their profile dashboard to demonstrate change over time and save that information to the database
-- Hardware improvements are boundless and complex pill dispensary systems would be the end goal
+- Hardware improvements are boundless and complex pill dispensary systems would be the end goal.
