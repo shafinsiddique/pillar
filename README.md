@@ -30,12 +30,12 @@
 
 ## List of Technologies Used
 
-° [Twilio](https://www.twilio.com/)
-° [Flask](https://github.com/pallets/flask)
-° [Voiceflow](https://www.voiceflow.com/)
-° [AWS](https://aws.amazon.com/)
-° [Arduino](https://www.arduino.cc/)
-° [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+° [Twilio](https://www.twilio.com/)</br>
+° [Flask](https://github.com/pallets/flask)</br>
+° [Voiceflow](https://www.voiceflow.com/)</br>
+° [AWS](https://aws.amazon.com/)</br>
+° [Arduino](https://www.arduino.cc/)</br>
+° [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)</br>
 
 
 
