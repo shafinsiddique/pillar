@@ -27,3 +27,18 @@
 ° We also wanted to visualize a lot of the patient's information in their profile dashboard to demonstrate change over time and save that information to the database
 
 ° Hardware improvements are boundless and complex pill dispensary systems would be the end goal
+
+## List of Technologies Used
+
+° [Twilio](https://www.twilio.com/)
+° [Flask](https://github.com/pallets/flask)
+° [Voiceflow](https://www.voiceflow.com/)
+° [AWS](https://aws.amazon.com/)
+° [Arduino](https://www.arduino.cc/)
+° [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+
+
+
+
+
+
