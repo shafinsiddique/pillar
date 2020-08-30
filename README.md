@@ -20,13 +20,6 @@
 
 ° The hardware component for this project, which is the actual Pillar Station was built using an Arduino and programmed in the C programming language. We used the Amazon Echo to allow patients to control our Pillar Stations via Voice. 
 
-## Next steps
-
-° We originally integrated Amazon Web Services (Facial Recognition) login for our project but did not have enough time to polish it. For added security reasons, we would polish and implement this feature in the future. This would also be used to provide annotated and analyzed images for doctors to go with symptom descriptions.
-
-° We also wanted to visualize a lot of the patient's information in their profile dashboard to demonstrate change over time and save that information to the database
-
-° Hardware improvements are boundless and complex pill dispensary systems would be the end goal
 
 ## List of Technologies Used
 
